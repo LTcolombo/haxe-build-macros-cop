@@ -1,3 +1,4 @@
+
 @:build(FileNamesBuilder.build("assets/"))
 class FileNames
 {

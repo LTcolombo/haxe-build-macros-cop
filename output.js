@@ -6,9 +6,19 @@ function $extend(from, fields) {
 	if( fields.toString !== Object.prototype.toString ) proto.toString = fields.toString;
 	return proto;
 }
+var HxOverrides = function() { };
+HxOverrides.__name__ = true;
+HxOverrides.iter = function(a) {
+	return { cur : 0, arr : a, hasNext : function() {
+		return this.cur < this.arr.length;
+	}, next : function() {
+		return this.arr[this.cur++];
+	}};
+};
 var Main = function() {
-	console.log("running build " + "b63d9c6ea72352a934cd0af0ecd2d0f7");
-	console.log("flag-1-config.png");
+	var test = new ProfilerTest();
+	test.run();
+	Profiler.printProfiles();
 };
 Main.__name__ = true;
 Main.main = function() {
@@ -18,6 +28,177 @@ Main.prototype = {
 	__class__: Main
 };
 Math.__name__ = true;
+var haxe_IMap = function() { };
+haxe_IMap.__name__ = true;
+var haxe_ds_StringMap = function() {
+	this.h = { };
+};
+haxe_ds_StringMap.__name__ = true;
+haxe_ds_StringMap.__interfaces__ = [haxe_IMap];
+haxe_ds_StringMap.prototype = {
+	setReserved: function(key,value) {
+		if(this.rh == null) this.rh = { };
+		this.rh["$" + key] = value;
+	}
+	,getReserved: function(key) {
+		return this.rh == null?null:this.rh["$" + key];
+	}
+	,existsReserved: function(key) {
+		if(this.rh == null) return false;
+		return this.rh.hasOwnProperty("$" + key);
+	}
+	,keys: function() {
+		var tmp;
+		var _this = this.arrayKeys();
+		tmp = HxOverrides.iter(_this);
+		return tmp;
+	}
+	,arrayKeys: function() {
+		var out = [];
+		for( var key in this.h ) {
+		if(this.h.hasOwnProperty(key)) out.push(key);
+		}
+		if(this.rh != null) {
+			for( var key in this.rh ) {
+			if(key.charCodeAt(0) == 36) out.push(key.substr(1));
+			}
+		}
+		return out;
+	}
+	,__class__: haxe_ds_StringMap
+};
+var Profiler = function() { };
+Profiler.__name__ = true;
+Profiler.startProfile = function(className,methodName) {
+	var tmp;
+	var _this = Profiler.profiles;
+	if(__map_reserved[className] != null) tmp = _this.existsReserved(className); else tmp = _this.h.hasOwnProperty(className);
+	if(!tmp) {
+		var _this1 = Profiler.profiles;
+		var value = new haxe_ds_StringMap();
+		if(__map_reserved[className] != null) _this1.setReserved(className,value); else _this1.h[className] = value;
+	}
+	var tmp1;
+	var tmp4;
+	var _this3 = Profiler.profiles;
+	if(__map_reserved[className] != null) tmp4 = _this3.getReserved(className); else tmp4 = _this3.h[className];
+	var _this2 = tmp4;
+	if(__map_reserved[methodName] != null) tmp1 = _this2.existsReserved(methodName); else tmp1 = _this2.h.hasOwnProperty(methodName);
+	if(!tmp1) {
+		var tmp5;
+		var _this5 = Profiler.profiles;
+		if(__map_reserved[className] != null) tmp5 = _this5.getReserved(className); else tmp5 = _this5.h[className];
+		var _this4 = tmp5;
+		var value1 = { calls : 0, startTime : 0, elapsedTime : 0};
+		if(__map_reserved[methodName] != null) _this4.setReserved(methodName,value1); else _this4.h[methodName] = value1;
+	}
+	var tmp2;
+	var tmp6;
+	var _this7 = Profiler.profiles;
+	if(__map_reserved[className] != null) tmp6 = _this7.getReserved(className); else tmp6 = _this7.h[className];
+	var _this6 = tmp6;
+	if(__map_reserved[methodName] != null) tmp2 = _this6.getReserved(methodName); else tmp2 = _this6.h[methodName];
+	tmp2.calls++;
+	var tmp3;
+	var tmp7;
+	var _this9 = Profiler.profiles;
+	if(__map_reserved[className] != null) tmp7 = _this9.getReserved(className); else tmp7 = _this9.h[className];
+	var _this8 = tmp7;
+	if(__map_reserved[methodName] != null) tmp3 = _this8.getReserved(methodName); else tmp3 = _this8.h[methodName];
+	tmp3.startTime = haxe_Timer.stamp();
+};
+Profiler.endProfile = function(className,methodName) {
+	var t = haxe_Timer.stamp();
+	var tmp;
+	var _this = Profiler.profiles;
+	if(__map_reserved[className] != null) tmp = _this.existsReserved(className); else tmp = _this.h.hasOwnProperty(className);
+	var tmp1;
+	if(!(!tmp)) {
+		var tmp4;
+		var tmp5;
+		var _this2 = Profiler.profiles;
+		if(__map_reserved[className] != null) tmp5 = _this2.getReserved(className); else tmp5 = _this2.h[className];
+		var _this1 = tmp5;
+		if(__map_reserved[methodName] != null) tmp4 = _this1.existsReserved(methodName); else tmp4 = _this1.h.hasOwnProperty(methodName);
+		tmp1 = !tmp4;
+	} else tmp1 = true;
+	if(tmp1) throw new js__$Boot_HaxeError("EndProfile was called on a function that was never started!");
+	var tmp2;
+	var tmp6;
+	var _this4 = Profiler.profiles;
+	if(__map_reserved[className] != null) tmp6 = _this4.getReserved(className); else tmp6 = _this4.h[className];
+	var _this3 = tmp6;
+	if(__map_reserved[methodName] != null) tmp2 = _this3.getReserved(methodName); else tmp2 = _this3.h[methodName];
+	var tmp3;
+	var tmp7;
+	var _this6 = Profiler.profiles;
+	if(__map_reserved[className] != null) tmp7 = _this6.getReserved(className); else tmp7 = _this6.h[className];
+	var _this5 = tmp7;
+	if(__map_reserved[methodName] != null) tmp3 = _this5.getReserved(methodName); else tmp3 = _this5.h[methodName];
+	tmp3.elapsedTime += t - tmp2.startTime;
+};
+Profiler.printProfiles = function() {
+	var totalTime = 0;
+	var $it0 = Profiler.profiles.keys();
+	while( $it0.hasNext() ) {
+		var className = $it0.next();
+		var classTime = 0;
+		console.log(className + ":");
+		var tmp;
+		var _this = Profiler.profiles;
+		if(__map_reserved[className] != null) tmp = _this.getReserved(className); else tmp = _this.h[className];
+		var $it1 = tmp.keys();
+		while( $it1.hasNext() ) {
+			var methodName = $it1.next();
+			var tmp1;
+			var tmp4;
+			var _this2 = Profiler.profiles;
+			if(__map_reserved[className] != null) tmp4 = _this2.getReserved(className); else tmp4 = _this2.h[className];
+			var _this1 = tmp4;
+			if(__map_reserved[methodName] != null) tmp1 = _this1.getReserved(methodName); else tmp1 = _this1.h[methodName];
+			var tmp2;
+			var tmp5;
+			var _this4 = Profiler.profiles;
+			if(__map_reserved[className] != null) tmp5 = _this4.getReserved(className); else tmp5 = _this4.h[className];
+			var _this3 = tmp5;
+			if(__map_reserved[methodName] != null) tmp2 = _this3.getReserved(methodName); else tmp2 = _this3.h[methodName];
+			console.log("  ." + methodName + ": " + tmp1.elapsedTime + "s (" + tmp2.calls + " calls)");
+			var tmp3;
+			var tmp6;
+			var _this6 = Profiler.profiles;
+			if(__map_reserved[className] != null) tmp6 = _this6.getReserved(className); else tmp6 = _this6.h[className];
+			var _this5 = tmp6;
+			if(__map_reserved[methodName] != null) tmp3 = _this5.getReserved(methodName); else tmp3 = _this5.h[methodName];
+			classTime += tmp3.elapsedTime;
+		}
+		console.log("  ---");
+		console.log("  " + classTime + "s");
+		totalTime += classTime;
+	}
+	console.log("");
+	console.log("Total time: " + totalTime + "s");
+};
+var ProfilerTest = function() {
+	Profiler.startProfile("ProfilerTest","new");
+	Profiler.endProfile("ProfilerTest","new");
+	return;
+};
+ProfilerTest.__name__ = true;
+ProfilerTest.prototype = {
+	run: function() {
+		Profiler.startProfile("ProfilerTest","run");
+		var x = 0;
+		var _g = 0;
+		while(_g < 100000000) {
+			_g++;
+			x += Math.sqrt(Math.random());
+		}
+		var ___tempProfilingReturnValue = x;
+		Profiler.endProfile("ProfilerTest","run");
+		return ___tempProfilingReturnValue;
+	}
+	,__class__: ProfilerTest
+};
 var Std = function() { };
 Std.__name__ = true;
 Std.string = function(s) {
@@ -30,6 +211,11 @@ var haxe__$Int64__$_$_$Int64 = function(high,low) {
 haxe__$Int64__$_$_$Int64.__name__ = true;
 haxe__$Int64__$_$_$Int64.prototype = {
 	__class__: haxe__$Int64__$_$_$Int64
+};
+var haxe_Timer = function() { };
+haxe_Timer.__name__ = true;
+haxe_Timer.stamp = function() {
+	return new Date().getTime() / 1000;
 };
 var haxe_io_Error = { __ename__ : true, __constructs__ : ["Blocked","Overflow","OutsideBounds","Custom"] };
 haxe_io_Error.Blocked = ["Blocked",0];
@@ -53,8 +239,7 @@ haxe_io_FPHelper.i32ToFloat = function(i) {
 };
 haxe_io_FPHelper.floatToI32 = function(f) {
 	if(f == 0) return 0;
-	var af;
-	if(f < 0) af = -f; else af = f;
+	var af = f < 0?-f:f;
 	var exp = Math.floor(Math.log(af) / 0.6931471805599453);
 	if(exp < -127) exp = -127; else if(exp > 128) exp = 128;
 	var sig = Math.round((af / Math.pow(2,exp) - 1) * 8388608) & 8388607;
@@ -73,12 +258,12 @@ haxe_io_FPHelper.doubleToI64 = function(v) {
 		i64.low = 0;
 		i64.high = 0;
 	} else {
-		var av;
-		if(v < 0) av = -v; else av = v;
+		var av = v < 0?-v:v;
 		var exp = Math.floor(Math.log(av) / 0.6931471805599453);
-		var sig;
+		var tmp;
 		var v1 = (av / Math.pow(2,exp) - 1) * 4503599627370496.;
-		sig = Math.round(v1);
+		tmp = Math.round(v1);
+		var sig = tmp;
 		var sig_l = sig | 0;
 		var sig_h = sig / 4294967296.0 | 0;
 		i64.low = sig_l;
@@ -262,25 +447,25 @@ js_html_compat_ArrayBuffer.prototype = {
 };
 var js_html_compat_DataView = function(buffer,byteOffset,byteLength) {
 	this.buf = buffer;
-	if(byteOffset == null) this.offset = 0; else this.offset = byteOffset;
-	if(byteLength == null) this.length = buffer.byteLength - this.offset; else this.length = byteLength;
+	this.offset = byteOffset == null?0:byteOffset;
+	this.length = byteLength == null?buffer.byteLength - this.offset:byteLength;
 	if(this.offset < 0 || this.length < 0 || this.offset + this.length > buffer.byteLength) throw new js__$Boot_HaxeError(haxe_io_Error.OutsideBounds);
 };
 js_html_compat_DataView.__name__ = true;
 js_html_compat_DataView.prototype = {
 	getInt8: function(byteOffset) {
 		var v = this.buf.a[this.offset + byteOffset];
-		if(v >= 128) return v - 256; else return v;
+		return v >= 128?v - 256:v;
 	}
 	,getUint8: function(byteOffset) {
 		return this.buf.a[this.offset + byteOffset];
 	}
 	,getInt16: function(byteOffset,littleEndian) {
 		var v = this.getUint16(byteOffset,littleEndian);
-		if(v >= 32768) return v - 65536; else return v;
+		return v >= 32768?v - 65536:v;
 	}
 	,getUint16: function(byteOffset,littleEndian) {
-		if(littleEndian) return this.buf.a[this.offset + byteOffset] | this.buf.a[this.offset + byteOffset + 1] << 8; else return this.buf.a[this.offset + byteOffset] << 8 | this.buf.a[this.offset + byteOffset + 1];
+		return littleEndian?this.buf.a[this.offset + byteOffset] | this.buf.a[this.offset + byteOffset + 1] << 8:this.buf.a[this.offset + byteOffset] << 8 | this.buf.a[this.offset + byteOffset + 1];
 	}
 	,getInt32: function(byteOffset,littleEndian) {
 		var p = this.offset + byteOffset;
@@ -288,11 +473,11 @@ js_html_compat_DataView.prototype = {
 		var b = this.buf.a[p++];
 		var c = this.buf.a[p++];
 		var d = this.buf.a[p++];
-		if(littleEndian) return a | b << 8 | c << 16 | d << 24; else return d | c << 8 | b << 16 | a << 24;
+		return littleEndian?a | b << 8 | c << 16 | d << 24:d | c << 8 | b << 16 | a << 24;
 	}
 	,getUint32: function(byteOffset,littleEndian) {
 		var v = this.getInt32(byteOffset,littleEndian);
-		if(v < 0) return v + 4294967296.; else return v;
+		return v < 0?v + 4294967296.:v;
 	}
 	,getFloat32: function(byteOffset,littleEndian) {
 		return haxe_io_FPHelper.i32ToFloat(this.getInt32(byteOffset,littleEndian));
@@ -303,7 +488,7 @@ js_html_compat_DataView.prototype = {
 		return haxe_io_FPHelper.i64ToDouble(littleEndian?a:b,littleEndian?b:a);
 	}
 	,setInt8: function(byteOffset,value) {
-		if(value < 0) this.buf.a[byteOffset + this.offset] = value + 128 & 255; else this.buf.a[byteOffset + this.offset] = value & 255;
+		this.buf.a[byteOffset + this.offset] = value < 0?value + 128 & 255:value & 255;
 	}
 	,setUint8: function(byteOffset,value) {
 		this.buf.a[byteOffset + this.offset] = value & 255;
@@ -413,9 +598,12 @@ js_html_compat_Uint8Array._subarray = function(start,end) {
 	a.byteOffset = start;
 	return a;
 };
+var __map_reserved = {}
 String.prototype.__class__ = String;
 String.__name__ = true;
 Array.__name__ = true;
+Date.prototype.__class__ = Date;
+Date.__name__ = ["Date"];
 var Int = { __name__ : ["Int"]};
 var Dynamic = { __name__ : ["Dynamic"]};
 var Float = Number;
@@ -428,6 +616,7 @@ var ArrayBuffer = $global.ArrayBuffer || js_html_compat_ArrayBuffer;
 if(ArrayBuffer.prototype.slice == null) ArrayBuffer.prototype.slice = js_html_compat_ArrayBuffer.sliceImpl;
 var DataView = $global.DataView || js_html_compat_DataView;
 var Uint8Array = $global.Uint8Array || js_html_compat_Uint8Array._new;
+Profiler.profiles = new haxe_ds_StringMap();
 haxe_io_FPHelper.i64tmp = (function($this) {
 	var $r;
 	var x = new haxe__$Int64__$_$_$Int64(0,0);

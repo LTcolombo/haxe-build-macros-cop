@@ -1,3 +1,6 @@
 -js output.js
 -main Main
 -dce full
+-D analyzer
+--next
+-cmd node output.js
